@@ -21,7 +21,11 @@ class PenilaianController extends Controller
     //
     public function index()
     {
-        $penilaian = Penilaian::all();
+        $penilaian = Penilaian::select('penilaians.*', 'dosens.nidn','dosens.nama_dosen','mahasiswas.nim','mahasiswas.nama_mahasiswa', 'matakuliahs.kodematkul','matakuliahs.matakuliah')
+        ->join('dosens', 'penilaians.dosen_id', '=', 'dosens.id')
+        ->join('mahasiswas', 'penilaians.mahasiswa_id', '=', 'mahasiswas.id')
+        ->join('matakuliahs', 'penilaians.matkul_id', '=', 'matakuliahs.id')
+        ->get();
 
         return response()->json([
             'success' => true,
